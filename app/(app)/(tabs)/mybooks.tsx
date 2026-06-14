@@ -49,7 +49,8 @@ const MyBooks = () => {
     router.push({
       pathname: "/(app)/(tabs)/editbook",
       params: {
-        bookId: book.book_id,
+        bookId: book.id,
+        bookTableId: book.book_id,
         title: bookTitle,
         author: bookAuthor,
         status: book.status,

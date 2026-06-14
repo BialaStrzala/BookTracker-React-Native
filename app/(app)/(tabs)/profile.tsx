@@ -62,15 +62,19 @@ const ProfileScreen = () => {
                 .order("created_at", { ascending: false });
 
             //latest book title+author
-            const { data: latestBook } = await supabase
-                .from("books")
-                .select("id, title, author")
-                .eq("id", userBookData[0]?.book_id)
-                .single();
+            let latestBook = null;
+            if (books?.length > 0) {
+                const { data } = await supabase
+                    .from("books")
+                    .select("id, title, author")
+                    .eq("id", books[0].book_id)
+                    .single();
+                latestBook = data;
+            }
 
             setUserBookData(books || []);
             setLatestBookData(latestBook);
-            //console.log("Latest book data:", latestBook);
+            //console.log(latestBook?.title);
         } catch (err) {
             console.error("Error loading profile:", err);
         } finally {
@@ -140,7 +144,7 @@ const ProfileScreen = () => {
                 {latestBook ? (
                     <Pressable onPress={() => {router.push({pathname: "/(app)/(tabs)/bookdetails",params: {bookId: latestBook.book_id.toString(),}});}}>
                     <View style={styles.latestBookRow}>
-                        <View style={[styles.bookImage, { backgroundColor: bookNameToColor(latestBook.books?.[0]?.title || "") }]}>
+                        <View style={[styles.bookImage, { backgroundColor: bookNameToColor(latestBookData?.title || "") }]}>
                             <Text style={styles.bookInitial}>
                                 {latestBookData?.title?.charAt(0).toUpperCase() || "?"}
                             </Text>

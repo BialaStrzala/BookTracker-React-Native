@@ -26,6 +26,7 @@ const EditBook = () => {
   const [error, setError] = useState<string | null>(null);
 
   const bookId = params.bookId as string;
+  const bookTableId = params.bookTableId as string;
   const title = params.title as string;
   const author = params.author as string;
 
@@ -33,7 +34,7 @@ const EditBook = () => {
     const loadBookData = async () => {
       try {
         setLoading(true);
-        const data = await getBookById(bookId);
+        const data = await getBookById(bookTableId || bookId);
         setBookData(data);
       }
       catch (err: any) {
